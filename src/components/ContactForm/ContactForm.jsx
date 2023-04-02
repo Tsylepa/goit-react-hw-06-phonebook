@@ -2,7 +2,7 @@ import { AddContactForm, ErrorText, Input, Button } from './ContactForm.styled';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import { addContact } from 'redux/store';
+import { addContact } from 'redux/contactsSlice';
 
 const FormError = ({ name }) => {
   return (

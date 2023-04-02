@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { removeContact } from 'redux/store';
+import { removeContact } from 'redux/contactsSlice';
 import Filter from '../Filter';
 import {
   Container,
