@@ -1,10 +1,8 @@
 import { AddContactForm, ErrorText, Input, Button } from './ContactForm.styled';
-import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { addContact } from 'redux/store';
-import { useEffect } from 'react';
 
 const FormError = ({ name }) => {
   return (
@@ -53,30 +51,22 @@ function checkContact(contacts, newContact) {
 }
 
 const ContactForm = () => {
-  const [newContact, setNewContact] = useState(null);
   const contacts = useSelector(state => state.contacts);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!newContact) return;
-
-    function handleSubmit() {
-      if (checkContact(contacts, newContact)) {
-        return alert(`${newContact.name} is already in contacts`);
-      }
-
-      dispatch(addContact(newContact));
+  function handleSubmit(newContact, resetForm) {
+    if (checkContact(contacts, newContact)) {
+      return alert(`${newContact.name} is already in contacts`);
     }
-
-    handleSubmit();
-  }, [newContact]);
+    dispatch(addContact(newContact));
+    resetForm();
+  }
 
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={(values, { resetForm }) => {
-        setNewContact(values);
-        resetForm();
+        handleSubmit(values, resetForm);
       }}
       validationSchema={schema}
     >
