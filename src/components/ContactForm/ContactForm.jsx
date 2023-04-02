@@ -1,7 +1,10 @@
 import { AddContactForm, ErrorText, Input, Button } from './ContactForm.styled';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Formik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
+import { addContact } from 'redux/store';
+import { useEffect } from 'react';
 
 const FormError = ({ name }) => {
   return (
@@ -43,11 +46,38 @@ function autoFormatPhoneNumber(e) {
   ].join('');
 }
 
-const ContactForm = ({ handleSubmit }) => {
+function checkContact(contacts, newContact) {
+  return contacts.find(
+    ({ name }) => name.toLowerCase() === newContact.name.toLowerCase()
+  );
+}
+
+const ContactForm = () => {
+  const [newContact, setNewContact] = useState(null);
+  const contacts = useSelector(state => state.contacts);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!newContact) return;
+
+    function handleSubmit() {
+      if (checkContact(contacts, newContact)) {
+        return alert(`${newContact.name} is already in contacts`);
+      }
+
+      dispatch(addContact(newContact));
+    }
+
+    handleSubmit();
+  }, [newContact]);
+
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={handleSubmit}
+      onSubmit={(values, { resetForm }) => {
+        setNewContact(values);
+        resetForm();
+      }}
       validationSchema={schema}
     >
       {({ isValid, dirty }) => {
@@ -75,10 +105,6 @@ const ContactForm = ({ handleSubmit }) => {
       }}
     </Formik>
   );
-};
-
-ContactForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default ContactForm;

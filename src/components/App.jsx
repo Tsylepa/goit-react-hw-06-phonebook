@@ -1,15 +1,16 @@
-import Phonebook from './Phonebook';
+import ContactForm from './ContactForm';
+import ContactList from './ContactList/ContactList';
+import { Wrapper } from './App.styled';
 
-export const App = () => {
+const App = () => {
   return (
-    <div
-      style={{
-        height: '100vh',
-        minWidth: 320,
-        padding: 20,
-      }}
-    >
-      <Phonebook />
-    </div>
+    <Wrapper>
+      <h1>Phonebook</h1>
+      <ContactForm />
+      <h2>My contacts</h2>
+      <ContactList />
+    </Wrapper>
   );
 };
+
+export default App;
