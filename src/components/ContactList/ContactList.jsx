@@ -24,7 +24,7 @@ const ContactList = () => {
     a.name.localeCompare(b.name)
   );
 
-  return !filteredContacts.length ? (
+  return !contacts.length ? (
     <p>Your contact list is empty...</p>
   ) : (
     <Container>
